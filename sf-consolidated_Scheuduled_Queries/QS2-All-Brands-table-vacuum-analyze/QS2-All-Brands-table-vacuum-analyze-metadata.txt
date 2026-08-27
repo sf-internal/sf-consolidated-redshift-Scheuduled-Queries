@@ -1,0 +1,10 @@
+Cluster or workgroup: sf-consolidated
+Database name: smartfinancial
+Query description: This schduled query is to Analyze the tables with stats_off >10
+SNS topic: -
+State: ACTIVATED
+IAM role: dms-access-for-endpoint 
+Authentication: temporary credentials password for DB User
+Frequency: At 09:00
+
+Query statement: CALL public.analyze_stale_tables(10, 500);
