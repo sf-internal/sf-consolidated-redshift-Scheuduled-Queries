@@ -245,7 +245,7 @@ BEGIN
     cir.naics_code,
 
     -- PPV2-415: vertical-specific consumer attributes
-    lh.property_use AS property_type,
+    lh.residence_type AS property_type,
     lh.square_footage,
     lh.number_of_stories,
     lh.year_built,
@@ -326,7 +326,8 @@ BEGIN
       ''
     ) AS plan_type,
 
-    left(ghrd.num_employees, 765) AS num_employees
+    left(ghrd.num_employees, 765) AS num_employees,
+    ld.requested_coverage
 
   FROM forms.visits v
 
@@ -408,14 +409,14 @@ BEGIN
   LEFT JOIN (
     SELECT
       lead_id,
-      property_use,
+      residence_type,
       square_footage,
       number_of_stories,
       year_built
     FROM (
       SELECT
         lead_id,
-        property_use,
+        residence_type,
         square_footage,
         number_of_stories,
         year_built,
@@ -493,6 +494,9 @@ BEGIN
     WHERE d.rn = 1
   ) ghrd
     ON v.lead_id = ghrd.lead_id
+
+  LEFT JOIN forms.leads ld
+    ON v.lead_id = ld.id
 
   WHERE v.updated_at >= DATE_TRUNC(
           'day',
@@ -634,7 +638,8 @@ BEGIN
     part_time_employees,
     business_revenue,
     plan_type,
-    num_employees
+    num_employees,
+    requested_coverage
   )
   SELECT
     id,
@@ -754,10 +759,10 @@ BEGIN
     part_time_employees,
     business_revenue,
     plan_type,
-    num_employees
+    num_employees,
+    requested_coverage
   FROM staging_aggr_visits2;
 
   DROP TABLE IF EXISTS staging_aggr_visits2;
 END;
 $$
-	
