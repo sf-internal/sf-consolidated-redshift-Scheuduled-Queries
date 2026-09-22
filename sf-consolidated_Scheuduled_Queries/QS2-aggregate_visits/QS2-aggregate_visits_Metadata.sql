@@ -9,6 +9,7 @@ Frequency: Every 30 minutes, only on Monday, Tuesday, Wednesday, Thursday, Frida
 
 Query statement: 
 CALL forms.recent_aggregate_visits();
+CALL forms.aggregate_visits(0);
 CALL forms.refresh_pub_aggr_stats(0);
 CALL forms.refresh_pub_aggr_state_stats(0);
 CALL forms.refresh_graph_aggr_stats(0);
