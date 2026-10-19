@@ -7,4 +7,8 @@ IAM role: dms-access-for-endpoint
 Authentication: temporary credentials password for DB User
 Frequency: Every 15 minutes, only on Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, and Sunday
 
-Query statement: CALL call_tracking.recent_aggregate_call_logs();
+Query statement:
+CALL call_tracking.recent_aggregate_call_logs();
+CALL call_tracking.refresh_pub_aggr_call_stats(0);
+CALL call_tracking.refresh_pub_aggr_call_state_stats(0);
+CALL call_tracking.refresh_graph_aggr_call_stats(0);
