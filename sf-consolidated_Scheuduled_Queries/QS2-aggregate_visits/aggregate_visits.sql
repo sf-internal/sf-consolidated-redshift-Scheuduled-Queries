@@ -515,6 +515,16 @@ BEGIN
           )
         ) + interval '34 hour'
     AND v.id IS NOT NULL;
+	
+    -- Normalize device_type before loading aggregate data.
+   -- Preserve the original device_type in forms.visits.
+   -- Expected values: desktop, mobile, tablet, other, or NULL.  
+  UPDATE staging_aggr_visits2 SET device_type = CASE 
+  WHEN LOWER(TRIM(device_type)) IN ('desktop', 'computer', 'mac', 'pc','windows', 'linux', 'chromebook') THEN 'desktop'
+  WHEN LOWER(TRIM(device_type)) ~ '(ipad|tablet|kindle|galaxy tab|sm-[xtp][0-9]|lenovo tb)' THEN 'tablet'
+  WHEN LOWER(TRIM(device_type)) ~ '(mobile|iphone|ipod|smartphone|samsung|pixel|motorola|moto|oneplus|oppo|xiaomi|redmi|realme|nokia|huawei)' THEN 'mobile'
+  ELSE 'other' END
+  WHERE device_type IS NOT NULL AND device_type NOT IN ('mobile', 'desktop', 'tablet', 'other');
 
   DELETE FROM forms.aggr_visits
   USING staging_aggr_visits2 s
@@ -766,3 +776,4 @@ BEGIN
   DROP TABLE IF EXISTS staging_aggr_visits2;
 END;
 $$
+	
