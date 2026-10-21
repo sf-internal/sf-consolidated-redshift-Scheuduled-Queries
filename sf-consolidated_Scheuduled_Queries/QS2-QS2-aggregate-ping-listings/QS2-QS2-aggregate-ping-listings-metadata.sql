@@ -9,7 +9,7 @@ Frequency: Every 30 minutes, only on Monday, Tuesday, Wednesday, Thursday, Frida
 
 Query statement:
 
-call pingpost.recent_aggregate_ping_listings();
-CALL pingpost.refresh_aggr_default_ping_listings(0);
-CALL pingpost.refresh_aggr_common_ping_listings(0);
-CALL pingpost.refresh_aggr_hourly_ping_listings(0);
+CALL dba_monitoring.sp_run_ping_listings_step(10,1);
+CALL dba_monitoring.sp_run_ping_listings_step(10,2);
+CALL dba_monitoring.sp_run_ping_listings_step(10,3);
+CALL dba_monitoring.sp_run_ping_listings_step(10,4);

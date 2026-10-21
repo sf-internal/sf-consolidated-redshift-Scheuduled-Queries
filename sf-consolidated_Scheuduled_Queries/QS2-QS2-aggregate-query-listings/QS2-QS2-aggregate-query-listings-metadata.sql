@@ -9,8 +9,8 @@ Frequency: Every 30 minutes, only on Monday, Tuesday, Wednesday, Thursday, Frida
 
 Query statement:
 
-CALL call_tracking.recent_aggregate_query_listings();
-CALL call_tracking.refresh_aggr_default_query_listings(0);
-CALL call_tracking.refresh_aggr_common_query_listings(0);
-CALL call_tracking.refresh_aggr_hourly_query_listings(0);
+CALL dba_monitoring.sp_run_query_listings_step(9,1);
+CALL dba_monitoring.sp_run_query_listings_step(9,2);
+CALL dba_monitoring.sp_run_query_listings_step(9,3);
+CALL dba_monitoring.sp_run_query_listings_step(9,4);
 
