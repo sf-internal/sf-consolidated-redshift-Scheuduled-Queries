@@ -1,0 +1,25 @@
+CREATE TABLE dba_monitoring.redshift_scheduled_query_config (
+    schedule_id bigint identity(1,1) ENCODE az64,
+    aws_account_name character varying(100) NOT NULL ENCODE lzo COLLATE case_sensitive,
+    cluster_name character varying(100) NOT NULL ENCODE lzo COLLATE case_sensitive,
+    database_name character varying(100) ENCODE lzo COLLATE case_sensitive,
+    schedule_name character varying(255) NOT NULL ENCODE lzo COLLATE case_sensitive,
+    query_description character varying(1000) ENCODE lzo COLLATE case_sensitive,
+    schedule_state character varying(20) ENCODE lzo COLLATE case_sensitive,
+    frequency_description character varying(100) ENCODE lzo COLLATE case_sensitive,
+    expected_frequency_minutes integer ENCODE az64,
+    sql_statement character varying(65535) ENCODE lzo COLLATE case_sensitive,
+    application_module character varying(255) ENCODE lzo COLLATE case_sensitive,
+    business_impact character varying(1000) ENCODE lzo COLLATE case_sensitive,
+    priority character varying(20) ENCODE lzo COLLATE case_sensitive,
+    failure_action character varying(1000) ENCODE lzo COLLATE case_sensitive,
+    expected_freshness_sla character varying(255) ENCODE lzo COLLATE case_sensitive,
+    freshness_sla_minutes integer ENCODE az64,
+    expected_max_duration_seconds integer ENCODE az64,
+    owner_contact character varying(255) ENCODE lzo COLLATE case_sensitive,
+    monitoring_required boolean DEFAULT true ENCODE raw,
+    created_at timestamp without time zone DEFAULT getdate() ENCODE az64,
+    updated_at timestamp without time zone DEFAULT getdate() ENCODE az64,
+    execution_mode character varying(30) DEFAULT 'DIRECT'::character varying ENCODE lzo COLLATE case_sensitive
+)
+DISTSTYLE AUTO;	
