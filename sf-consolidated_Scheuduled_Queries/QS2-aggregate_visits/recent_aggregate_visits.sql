@@ -117,12 +117,12 @@ BEGIN
    -- Normalize device_type before loading aggregate data.
    -- Preserve the original device_type in forms.visits.
    -- Expected values: desktop, mobile, tablet, other, or NULL.  
-  UPDATE staging_aggr_visits SET device_type = CASE 
-  WHEN LOWER(TRIM(device_type)) IN ('desktop', 'computer', 'mac', 'pc','windows', 'linux', 'chromebook') THEN 'desktop'
-  WHEN LOWER(TRIM(device_type)) ~ '(ipad|tablet|kindle|galaxy tab|sm-[xtp][0-9]|lenovo tb)' THEN 'tablet'
-  WHEN LOWER(TRIM(device_type)) ~ '(mobile|iphone|ipod|smartphone|samsung|pixel|motorola|moto|oneplus|oppo|xiaomi|redmi|realme|nokia|huawei)' THEN 'mobile'
-  ELSE 'other' END
-  WHERE device_type IS NOT NULL AND device_type NOT IN ('mobile', 'desktop', 'tablet', 'other');
+   UPDATE staging_aggr_visits SET device_type = CASE
+   WHEN TRIM(device_type) = '' THEN NULL
+   WHEN LOWER(TRIM(device_type)) IN ('desktop', 'computer', 'mac', 'pc','windows', 'linux', 'chromebook') THEN 'desktop'
+   WHEN LOWER(TRIM(device_type)) = 'other' THEN 'other' 
+   WHEN LOWER(TRIM(device_type)) ~ '(ipad|tablet|kindle|tab|pad|^kf[a-z]{4}$|sm-[xtp][0-9]|lenovo tb)' THEN 'tablet'
+   ELSE 'mobile' END WHERE device_type IS NOT NULL AND device_type NOT IN ('mobile', 'desktop', 'tablet', 'other');
 
   DELETE FROM forms.aggr_visits
   USING staging_aggr_visits s
